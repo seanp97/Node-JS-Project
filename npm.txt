@@ -3,3 +3,5 @@ Install
 npm install express
 npm install express-handlebars
 npm install nodemon -g
+npm install mysql
+npm install body-parser
