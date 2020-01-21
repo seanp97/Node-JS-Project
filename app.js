@@ -20,6 +20,7 @@ app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, '/views'));
 app.use(express.urlencoded());
+app.use(express.static(__dirname + '/src'));
 
 app.get("/", function(req, res) {
     con.query("SELECT * FROM NodeSQL", function (err, result, fields) {
@@ -37,4 +38,4 @@ app.get("/about", function(req, res) {
     //res.render("about", {layout: "main"});
 });
 
-app.listen(8092);
+app.listen(8093);
