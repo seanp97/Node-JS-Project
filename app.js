@@ -38,4 +38,12 @@ app.get("/about", function(req, res) {
     //res.render("about", {layout: "main"});
 });
 
-app.listen(8093);
+app.post('/adduser', function(req, res) {
+    console.log(`${req.body.name}`);
+    con.query(`INSERT INTO NodeSQL (name) VALUES ("${req.body.name}")`, function (err, result) {
+        if (err) throw err;
+        res.send("Updated with " + req.body.name);
+    });
+});
+
+app.listen(8102);
