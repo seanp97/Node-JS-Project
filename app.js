@@ -14,20 +14,23 @@ var con = mysql.createConnection({
 
 con.connect(function (err) {
     if (err) throw err;
+    console.log("Connected");
 });
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, '/views'));
-app.use(express.urlencoded());
 app.use(express.static(__dirname + '/src'));
+//app.use(express.bodyParser());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 app.get("/", function(req, res) {
     con.query("SELECT * FROM NodeSQL", function (err, result, fields) {
         if (err) throw err;
         res.render("index", {layout: "main", data: result});
     });
-    //res.render("index", {layout: "main"});
 });
 
 app.get("/about", function(req, res) {
@@ -35,15 +38,38 @@ app.get("/about", function(req, res) {
         if (err) throw err;
         res.render("about", {layout: "main", data: result})
     });
-    //res.render("about", {layout: "main"});
 });
 
 app.post('/adduser', function(req, res) {
-    console.log(`${req.body.name}`);
-    con.query(`INSERT INTO NodeSQL (name) VALUES ("${req.body.name}")`, function (err, result) {
+    con.query(`INSERT INTO NodeSQL (name) VALUES ("${req.body.name}")`, function (err) {
         if (err) throw err;
-        res.send("Updated with " + req.body.name);
+        console.log(err);
+        //res.send("Updated with " + req.body.name);
+        res.render("addpost", {layout: "main"});
     });
 });
 
-app.listen(8102);
+app.get('/delete/:id', function(req, res) {
+    con.query(`DELETE FROM NodeSQL WHERE id="${req.params.id}"`, function (err) {
+        if (err) throw err;
+        res.render("delete", {layout: "main"});
+    });
+});
+
+app.get('/edit/:id', function(req, res) {
+    con.query(`SELECT * FROM NodeSQL WHERE id="${req.params.id}"`, function (err, result, fields) {
+        if (err) throw err;
+        res.render("edit", {layout: "main", data: result});
+    });
+});
+
+
+app.post('/edituser/:id',(req, res) => {
+    con.query(`UPDATE NodeSQL SET name = "${req.body.edit}" WHERE id = "${req.params.id}"`), function(err) {
+        if (err) throw err;
+        res.render("edituser", {layout: "main"});
+    }
+  });
+
+
+app.listen(8081);

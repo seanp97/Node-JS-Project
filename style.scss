@@ -1,5 +1,16 @@
-td {
-    color: red;
+body * {
+    font-family: 'Merriweather', serif;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+ul {
+    li {
+        list-style-type: none;
+    }
+}
+
+#addUser {
+  margin-top: 10px;
 }
 
 .site-footer

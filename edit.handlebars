@@ -1,0 +1,13 @@
+ {{#each data}}
+    <h1>   
+       Edit {{this.name}}
+    </h1>
+{{/each}}
+
+<form action="/edituser/{{#each data}}{{this.id}}{{/each}}" method="POST">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input class="form-control" id="editInput" type="text" name="edit" placeholder="Enter new name" />
+        <button id="editUser" style="margin-top: 10px;" type="button" class="btn btn-success">Success</button>
+    </div>
+</form>
